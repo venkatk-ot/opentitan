@@ -549,6 +549,20 @@
       inter_signal_list:
       [
         {
+          name: lsio_trigger
+          desc:
+            '''
+            Self-clearing status trigger for the DMA.
+            Set when RX or TX FIFOs are past their configured watermarks matching watermark interrupt behaviour.
+            '''
+          struct: logic
+          type: uni
+          act: req
+          width: 1
+          inst_name: uart0
+          index: -1
+        }
+        {
           name: tl
           struct: tl
           package: tlul_pkg
@@ -595,6 +609,20 @@
       param_list: []
       inter_signal_list:
       [
+        {
+          name: lsio_trigger
+          desc:
+            '''
+            Self-clearing status trigger for the DMA.
+            Set when RX or TX FIFOs are past their configured watermarks matching watermark interrupt behaviour.
+            '''
+          struct: logic
+          type: uni
+          act: req
+          width: 1
+          inst_name: uart1
+          index: -1
+        }
         {
           name: tl
           struct: tl
@@ -643,6 +671,20 @@
       inter_signal_list:
       [
         {
+          name: lsio_trigger
+          desc:
+            '''
+            Self-clearing status trigger for the DMA.
+            Set when RX or TX FIFOs are past their configured watermarks matching watermark interrupt behaviour.
+            '''
+          struct: logic
+          type: uni
+          act: req
+          width: 1
+          inst_name: uart2
+          index: -1
+        }
+        {
           name: tl
           struct: tl
           package: tlul_pkg
@@ -690,6 +732,20 @@
       inter_signal_list:
       [
         {
+          name: lsio_trigger
+          desc:
+            '''
+            Self-clearing status trigger for the DMA.
+            Set when RX or TX FIFOs are past their configured watermarks matching watermark interrupt behaviour.
+            '''
+          struct: logic
+          type: uni
+          act: req
+          width: 1
+          inst_name: uart3
+          index: -1
+        }
+        {
           name: tl
           struct: tl
           package: tlul_pkg
@@ -726,6 +782,7 @@
       }
       param_decl:
       {
+        GpioAsHwStrapsEn: "0"
         GpioAsyncOn: "1"
       }
       clock_connections:
@@ -747,9 +804,40 @@
           expose: "true"
           name_top: GpioGpioAsyncOn
         }
+        {
+          name: GpioAsHwStrapsEn
+          desc: Enable HW straps sampling logic for GPIO inputs at initial cold boot
+          type: bit
+          default: "0"
+          expose: "true"
+          name_top: GpioGpioAsHwStrapsEn
+        }
       ]
       inter_signal_list:
       [
+        {
+          name: strap_en
+          desc: This signal is pulsed high by the power manager after reset in order to sample the HW straps.
+          struct: logic
+          type: uni
+          act: rcv
+          width: 1
+          default: 1'b0
+          inst_name: gpio
+          index: -1
+        }
+        {
+          name: sampled_straps
+          desc: This vector contains the sampled strap values.
+          struct: gpio_straps
+          package: gpio_pkg
+          type: uni
+          act: req
+          width: 1
+          default: "'0"
+          inst_name: gpio
+          index: -1
+        }
         {
           name: tl
           struct: tl
@@ -933,6 +1021,20 @@
           index: -1
         }
         {
+          name: lsio_trigger
+          desc:
+            '''
+            Self-clearing status trigger for the DMA.
+            Set when RX TX FIFO is past their configured watermark matching watermark interrupt behaviour.
+            '''
+          struct: logic
+          type: uni
+          act: req
+          width: 1
+          inst_name: i2c0
+          index: -1
+        }
+        {
           name: tl
           struct: tl
           package: tlul_pkg
@@ -1007,6 +1109,20 @@
           index: -1
         }
         {
+          name: lsio_trigger
+          desc:
+            '''
+            Self-clearing status trigger for the DMA.
+            Set when RX TX FIFO is past their configured watermark matching watermark interrupt behaviour.
+            '''
+          struct: logic
+          type: uni
+          act: req
+          width: 1
+          inst_name: i2c1
+          index: -1
+        }
+        {
           name: tl
           struct: tl
           package: tlul_pkg
@@ -1078,6 +1194,20 @@
           inst_name: i2c2
           default: ""
           top_signame: ast_ram_1p_cfg
+          index: -1
+        }
+        {
+          name: lsio_trigger
+          desc:
+            '''
+            Self-clearing status trigger for the DMA.
+            Set when RX TX FIFO is past their configured watermark matching watermark interrupt behaviour.
+            '''
+          struct: logic
+          type: uni
+          act: req
+          width: 1
+          inst_name: i2c2
           index: -1
         }
         {
@@ -2391,6 +2521,20 @@
           index: -1
         }
         {
+          name: lsio_trigger
+          desc:
+            '''
+            Self-clearing status trigger for the DMA.
+            Set when RX or TX FIFOs are past their configured watermarks matching watermark interrupt behaviour.
+            '''
+          struct: logic
+          type: uni
+          act: req
+          width: 1
+          inst_name: spi_host0
+          index: -1
+        }
+        {
           name: tl
           struct: tl
           package: tlul_pkg
@@ -2443,6 +2587,20 @@
           package: spi_device_pkg
           type: req_rsp
           act: rsp
+          width: 1
+          inst_name: spi_host1
+          index: -1
+        }
+        {
+          name: lsio_trigger
+          desc:
+            '''
+            Self-clearing status trigger for the DMA.
+            Set when RX or TX FIFOs are past their configured watermarks matching watermark interrupt behaviour.
+            '''
+          struct: logic
+          type: uni
+          act: req
           width: 1
           inst_name: spi_host1
           index: -1
@@ -10150,7 +10308,7 @@
           [
             {
               base_addr: 0x40040000
-              size_byte: 0x40
+              size_byte: 0x80
             }
           ]
           xbar: false
@@ -15976,6 +16134,20 @@
     signals:
     [
       {
+        name: lsio_trigger
+        desc:
+          '''
+          Self-clearing status trigger for the DMA.
+          Set when RX or TX FIFOs are past their configured watermarks matching watermark interrupt behaviour.
+          '''
+        struct: logic
+        type: uni
+        act: req
+        width: 1
+        inst_name: uart0
+        index: -1
+      }
+      {
         name: tl
         struct: tl
         package: tlul_pkg
@@ -15986,6 +16158,20 @@
         default: ""
         end_idx: -1
         top_signame: uart0_tl
+        index: -1
+      }
+      {
+        name: lsio_trigger
+        desc:
+          '''
+          Self-clearing status trigger for the DMA.
+          Set when RX or TX FIFOs are past their configured watermarks matching watermark interrupt behaviour.
+          '''
+        struct: logic
+        type: uni
+        act: req
+        width: 1
+        inst_name: uart1
         index: -1
       }
       {
@@ -16002,6 +16188,20 @@
         index: -1
       }
       {
+        name: lsio_trigger
+        desc:
+          '''
+          Self-clearing status trigger for the DMA.
+          Set when RX or TX FIFOs are past their configured watermarks matching watermark interrupt behaviour.
+          '''
+        struct: logic
+        type: uni
+        act: req
+        width: 1
+        inst_name: uart2
+        index: -1
+      }
+      {
         name: tl
         struct: tl
         package: tlul_pkg
@@ -16015,6 +16215,20 @@
         index: -1
       }
       {
+        name: lsio_trigger
+        desc:
+          '''
+          Self-clearing status trigger for the DMA.
+          Set when RX or TX FIFOs are past their configured watermarks matching watermark interrupt behaviour.
+          '''
+        struct: logic
+        type: uni
+        act: req
+        width: 1
+        inst_name: uart3
+        index: -1
+      }
+      {
         name: tl
         struct: tl
         package: tlul_pkg
@@ -16025,6 +16239,29 @@
         default: ""
         end_idx: -1
         top_signame: uart3_tl
+        index: -1
+      }
+      {
+        name: strap_en
+        desc: This signal is pulsed high by the power manager after reset in order to sample the HW straps.
+        struct: logic
+        type: uni
+        act: rcv
+        width: 1
+        default: 1'b0
+        inst_name: gpio
+        index: -1
+      }
+      {
+        name: sampled_straps
+        desc: This vector contains the sampled strap values.
+        struct: gpio_straps
+        package: gpio_pkg
+        type: uni
+        act: req
+        width: 1
+        default: "'0"
+        inst_name: gpio
         index: -1
       }
       {
@@ -16114,6 +16351,20 @@
         index: -1
       }
       {
+        name: lsio_trigger
+        desc:
+          '''
+          Self-clearing status trigger for the DMA.
+          Set when RX TX FIFO is past their configured watermark matching watermark interrupt behaviour.
+          '''
+        struct: logic
+        type: uni
+        act: req
+        width: 1
+        inst_name: i2c0
+        index: -1
+      }
+      {
         name: tl
         struct: tl
         package: tlul_pkg
@@ -16139,6 +16390,20 @@
         index: -1
       }
       {
+        name: lsio_trigger
+        desc:
+          '''
+          Self-clearing status trigger for the DMA.
+          Set when RX TX FIFO is past their configured watermark matching watermark interrupt behaviour.
+          '''
+        struct: logic
+        type: uni
+        act: req
+        width: 1
+        inst_name: i2c1
+        index: -1
+      }
+      {
         name: tl
         struct: tl
         package: tlul_pkg
@@ -16161,6 +16426,20 @@
         inst_name: i2c2
         default: ""
         top_signame: ast_ram_1p_cfg
+        index: -1
+      }
+      {
+        name: lsio_trigger
+        desc:
+          '''
+          Self-clearing status trigger for the DMA.
+          Set when RX TX FIFO is past their configured watermark matching watermark interrupt behaviour.
+          '''
+        struct: logic
+        type: uni
+        act: req
+        width: 1
+        inst_name: i2c2
         index: -1
       }
       {
@@ -17063,6 +17342,20 @@
         index: -1
       }
       {
+        name: lsio_trigger
+        desc:
+          '''
+          Self-clearing status trigger for the DMA.
+          Set when RX or TX FIFOs are past their configured watermarks matching watermark interrupt behaviour.
+          '''
+        struct: logic
+        type: uni
+        act: req
+        width: 1
+        inst_name: spi_host0
+        index: -1
+      }
+      {
         name: tl
         struct: tl
         package: tlul_pkg
@@ -17081,6 +17374,20 @@
         package: spi_device_pkg
         type: req_rsp
         act: rsp
+        width: 1
+        inst_name: spi_host1
+        index: -1
+      }
+      {
+        name: lsio_trigger
+        desc:
+          '''
+          Self-clearing status trigger for the DMA.
+          Set when RX or TX FIFOs are past their configured watermarks matching watermark interrupt behaviour.
+          '''
+        struct: logic
+        type: uni
+        act: req
         width: 1
         inst_name: spi_host1
         index: -1

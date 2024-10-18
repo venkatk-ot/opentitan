@@ -2,20 +2,13 @@
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-load(
-    "@bazel_skylib//lib:dicts.bzl",
-    "dicts",
-)
+load("@bazel_skylib//lib:dicts.bzl", "dicts")
 load(
     "//rules:const.bzl",
     "CONST",
     "get_lc_items",
 )
-load(
-    "//rules:opentitan.bzl",
-    "ECDSA_ONLY_KEY_STRUCTS",
-    "OPENTITAN_CPU",
-)
+load("//rules/opentitan:keyutils.bzl", "ECDSA_ONLY_KEY_STRUCTS")
 load(
     "//rules:otp.bzl",
     "STD_OTP_OVERLAYS",
@@ -28,6 +21,7 @@ load(
     "EARLGREY_CW340_TEST_ENVS",
     "EARLGREY_SILICON_OWNER_ROM_EXT_ENVS",
     "EARLGREY_TEST_ENVS",
+    "OPENTITAN_CPU",
     "dv_params",
     "ecdsa_key_for_lc_state",
     "fpga_params",
@@ -2184,6 +2178,27 @@ opentitan_test(
         "//hw/top_earlgrey/sw/autogen:top_earlgrey",
         "//sw/device/lib/base:mmio",
         "//sw/device/lib/dif:rom_ctrl",
+        "//sw/device/lib/runtime:log",
+        "//sw/device/lib/testing/test_framework:ottf_main",
+    ],
+)
+
+opentitan_test(
+    name = "kmac_endianess_test",
+    srcs = ["kmac_endianess_test.c"],
+    exec_env = dicts.add(
+        EARLGREY_TEST_ENVS,
+        EARLGREY_SILICON_OWNER_ROM_EXT_ENVS,
+        {
+            "//hw/top_earlgrey:silicon_creator": None,
+        },
+    ),
+    deps = [
+        "//hw/top_earlgrey/sw/autogen:top_earlgrey",
+        "//sw/device/lib/arch:device",
+        "//sw/device/lib/base:macros",
+        "//sw/device/lib/base:mmio",
+        "//sw/device/lib/dif:kmac",
         "//sw/device/lib/runtime:log",
         "//sw/device/lib/testing/test_framework:ottf_main",
     ],

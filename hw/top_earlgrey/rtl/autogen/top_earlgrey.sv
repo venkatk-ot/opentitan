@@ -20,6 +20,7 @@ module top_earlgrey #(
   // parameters for uart3
   // parameters for gpio
   parameter bit GpioGpioAsyncOn = 1,
+  parameter bit GpioGpioAsHwStrapsEn = 0,
   // parameters for spi_device
   parameter spi_device_pkg::sram_type_e SpiDeviceSramType = spi_device_pkg::DefaultSramType,
   // parameters for i2c0
@@ -1052,6 +1053,7 @@ module top_earlgrey #(
       .alert_rx_i  ( alert_rx[0:0] ),
 
       // Inter-module signals
+      .lsio_trigger_o(),
       .tl_i(uart0_tl_req),
       .tl_o(uart0_tl_rsp),
 
@@ -1085,6 +1087,7 @@ module top_earlgrey #(
       .alert_rx_i  ( alert_rx[1:1] ),
 
       // Inter-module signals
+      .lsio_trigger_o(),
       .tl_i(uart1_tl_req),
       .tl_o(uart1_tl_rsp),
 
@@ -1118,6 +1121,7 @@ module top_earlgrey #(
       .alert_rx_i  ( alert_rx[2:2] ),
 
       // Inter-module signals
+      .lsio_trigger_o(),
       .tl_i(uart2_tl_req),
       .tl_o(uart2_tl_rsp),
 
@@ -1151,6 +1155,7 @@ module top_earlgrey #(
       .alert_rx_i  ( alert_rx[3:3] ),
 
       // Inter-module signals
+      .lsio_trigger_o(),
       .tl_i(uart3_tl_req),
       .tl_o(uart3_tl_rsp),
 
@@ -1160,7 +1165,8 @@ module top_earlgrey #(
   );
   gpio #(
     .AlertAsyncOn(alert_handler_reg_pkg::AsyncOn[4:4]),
-    .GpioAsyncOn(GpioGpioAsyncOn)
+    .GpioAsyncOn(GpioGpioAsyncOn),
+    .GpioAsHwStrapsEn(GpioGpioAsHwStrapsEn)
   ) u_gpio (
 
       // Input
@@ -1177,6 +1183,8 @@ module top_earlgrey #(
       .alert_rx_i  ( alert_rx[4:4] ),
 
       // Inter-module signals
+      .strap_en_i(1'b0),
+      .sampled_straps_o(),
       .tl_i(gpio_tl_req),
       .tl_o(gpio_tl_rsp),
 
@@ -1265,6 +1273,7 @@ module top_earlgrey #(
 
       // Inter-module signals
       .ram_cfg_i(ast_ram_1p_cfg),
+      .lsio_trigger_o(),
       .tl_i(i2c0_tl_req),
       .tl_o(i2c0_tl_rsp),
 
@@ -1309,6 +1318,7 @@ module top_earlgrey #(
 
       // Inter-module signals
       .ram_cfg_i(ast_ram_1p_cfg),
+      .lsio_trigger_o(),
       .tl_i(i2c1_tl_req),
       .tl_o(i2c1_tl_rsp),
 
@@ -1353,6 +1363,7 @@ module top_earlgrey #(
 
       // Inter-module signals
       .ram_cfg_i(ast_ram_1p_cfg),
+      .lsio_trigger_o(),
       .tl_i(i2c2_tl_req),
       .tl_o(i2c2_tl_rsp),
 
@@ -1601,6 +1612,7 @@ module top_earlgrey #(
       // Inter-module signals
       .passthrough_i(spi_device_passthrough_req),
       .passthrough_o(spi_device_passthrough_rsp),
+      .lsio_trigger_o(),
       .tl_i(spi_host0_tl_req),
       .tl_o(spi_host0_tl_rsp),
 
@@ -1633,6 +1645,7 @@ module top_earlgrey #(
       // Inter-module signals
       .passthrough_i(spi_device_pkg::PASSTHROUGH_REQ_DEFAULT),
       .passthrough_o(),
+      .lsio_trigger_o(),
       .tl_i(spi_host1_tl_req),
       .tl_o(spi_host1_tl_rsp),
 
